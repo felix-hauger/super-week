@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\User;
 use Faker\Factory;
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
@@ -15,7 +16,9 @@ $router->map('GET', '/', function() {
 
 // map users list page
 $router->map('GET', '/users', function() {
-    echo 'Bienvenue sur la liste des Utilisateurs';
+    $user = new User();
+
+    echo 'Bienvenue sur la liste des Utilisateurs<br />' . $user->list();    
 }, 'users_list');
 
 // map user detail page
