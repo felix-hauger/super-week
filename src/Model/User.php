@@ -56,4 +56,21 @@ class User
 
         return $insert->execute();
     }
+
+    public function isFieldInDb(string $column, mixed $value, bool $case_sensitive = false): bool
+    {
+        if ($case_sensitive) {
+            $sql = 'SELECT COUNT(id) FROM user WHERE BINARY ' . $column . ' = :' . $column;
+        } else {
+            $sql = 'SELECT COUNT(id) FROM user WHERE UPPER(' . $column . ') LIKE UPPER(:' . $column . ')';
+        }
+
+        $select = $this->_db->prepare($sql);
+
+        $select->bindParam(':' . $column, $value);
+
+        $select->execute();
+
+        return $select->fetchColumn() > 0;
+    }
 }
