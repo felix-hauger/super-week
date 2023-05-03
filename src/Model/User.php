@@ -45,7 +45,7 @@ class User
 
     public function create(EntityUser $user)
     {
-        $sql = 'INSERT INTO user (email, password, first_name, lastname) VALUES (:email, :password, :first_name, :last_name)';
+        $sql = 'INSERT INTO user (email, password, first_name, last_name) VALUES (:email, :password, :first_name, :last_name)';
 
         $insert = $this->_db->prepare($sql);
 
