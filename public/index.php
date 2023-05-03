@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\Auth;
 use App\Controller\User;
 use Faker\Factory;
 
@@ -13,6 +14,16 @@ $router->setBasePath('/super-week');
 $router->map('GET', '/', function() {
     echo 'Bienvenue sur l\'accueil';
 }, 'home');
+
+$router->map('GET', '/register', function() {
+    require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'register.php';
+}, 'user_register');
+
+$router->map('POST', '/register', function() {
+    $auth = new Auth();
+
+    $auth->register();
+}, 'user_register_validate');
 
 // map users list page
 $router->map('GET', '/users', function() {

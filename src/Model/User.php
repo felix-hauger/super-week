@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Entity\User as EntityUser;
 use PDO;
 use PDOException;
 
@@ -40,5 +41,36 @@ class User
         $select->execute();
 
         return $select->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function create(EntityUser $user)
+    {
+        $sql = 'INSERT INTO user (email, password, first_name, last_name) VALUES (:email, :password, :first_name, :last_name)';
+
+        $insert = $this->_db->prepare($sql);
+
+        $insert->bindValue(':email', $user->getEmail());
+        $insert->bindValue(':password', $user->getPassword());
+        $insert->bindValue(':first_name', $user->getFirstName());
+        $insert->bindValue(':last_name', $user->getLastName());
+
+        return $insert->execute();
+    }
+
+    public function isFieldInDb(string $column, mixed $value, bool $case_sensitive = false): bool
+    {
+        if ($case_sensitive) {
+            $sql = 'SELECT COUNT(id) FROM user WHERE BINARY ' . $column . ' = :' . $column;
+        } else {
+            $sql = 'SELECT COUNT(id) FROM user WHERE UPPER(' . $column . ') LIKE UPPER(:' . $column . ')';
+        }
+
+        $select = $this->_db->prepare($sql);
+
+        $select->bindParam(':' . $column, $value);
+
+        $select->execute();
+
+        return $select->fetchColumn() > 0;
     }
 }
