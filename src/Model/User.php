@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Entity\User as EntityUser;
 use PDO;
 use PDOException;
 
@@ -40,5 +41,19 @@ class User
         $select->execute();
 
         return $select->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function create(EntityUser $user)
+    {
+        $sql = 'INSERT INTO user (email, password, first_name, lastname) VALUES (:email, :password, :first_name, :last_name)';
+
+        $insert = $this->_db->prepare($sql);
+
+        $insert->bindValue(':email', $user->getEmail());
+        $insert->bindValue(':password', $user->getPassword());
+        $insert->bindValue(':first_name', $user->getFirstName());
+        $insert->bindValue(':last_name', $user->getLastName());
+
+        return $insert->execute();
     }
 }
