@@ -27,4 +27,18 @@ class User
             echo $e->getMessage();
         }
     }
+
+    /**
+     * @return array|false Database result if request is successfull, false otherwise
+     */
+    public function findAll(): array|false
+    {
+        $sql = 'SELECT * FROM user';
+        
+        $select = $this->_db->prepare($sql);
+
+        $select->execute();
+
+        return $select->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
