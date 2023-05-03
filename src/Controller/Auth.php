@@ -27,8 +27,11 @@ class Auth
 
             $user_model = new ModelUser();
 
-            $user = new User();
+            if ($user_model->isFieldInDb('email', $input['email'])) {
+                die('The email already exists.');
+            }
 
+            $user = new User();
 
             $user
                 ->setEmail($input['email'])
