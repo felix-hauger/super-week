@@ -14,6 +14,10 @@ $router->map('GET', '/', function() {
     echo 'Bienvenue sur l\'accueil';
 }, 'home');
 
+$router->map('GET', '/register', function() {
+    require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'register.php';
+}, 'user_register');
+
 // map users list page
 $router->map('GET', '/users', function() {
     $user = new User();
