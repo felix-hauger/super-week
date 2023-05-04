@@ -21,14 +21,14 @@ class Auth
         if ($input['password'] === $input['confirm']) {
             foreach ($input as $key => $value) {
                 if (!$value) {
-                    die(str_replace('_', ' ', ucwords($key)) . ' input invalid.');
+                    throw new Exception(str_replace('_', ' ', ucwords($key)) . ' input invalid.');
                 }
             }
 
             $user_model = new ModelUser();
 
             if ($user_model->isFieldInDb('email', $input['email'])) {
-                die('The email already exists.');
+                throw new Exception('The email already exists.');
             }
 
             $user = new User();
@@ -41,7 +41,7 @@ class Auth
 
             $user_model->create($user);
         } else {
-            die('The password and its confirmation must match.');
+            throw new Exception('The password and its confirmation must match.');
         }
     }
 }

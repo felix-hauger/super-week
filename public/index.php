@@ -22,7 +22,13 @@ $router->map('GET', '/register', function() {
 $router->map('POST', '/register', function() {
     $auth = new Auth();
 
-    $auth->register();
+    try {
+        $auth->register();
+    } catch (Exception $e) {
+        header('Location: /super-week/register');
+        session_start();
+        $_SESSION['errors']['register'] = $e->getMessage();
+    }
 }, 'user_register_validate');
 
 // map users list page
