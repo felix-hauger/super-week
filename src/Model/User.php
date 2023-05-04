@@ -23,7 +23,7 @@ class User
             $this->_db = new PDO($db['type'] . ':dbname=' . $db['name'] . ';host=' . $db['host'] . ';charset=' . $db['charset'], $db['user'], $db['password']);
     
             // Prevent emulation of prepared requests
-           $this->_db->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+           $this->_db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
