@@ -43,6 +43,22 @@ class User
         return $select->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @return array|false Database result if request is successfull, false otherwise
+     */
+    public function find(int $id): array|false
+    {
+        $sql = 'SELECT * FROM user WHERE id = :id';
+
+        $select = $this->_db->prepare($sql);
+
+        $select->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $select->execute();
+
+        return $select->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function create(EntityUser $user)
     {
         $sql = 'INSERT INTO user (email, password, first_name, last_name) VALUES (:email, :password, :first_name, :last_name)';
