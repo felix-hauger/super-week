@@ -89,4 +89,26 @@ class User
 
         return $select->fetchColumn() > 0;
     }
+
+    /**
+     * Search an id in the database using by column name & value
+     * @param string $column The name of the column in the table
+     * @param string $value The value to search
+     * @param bool $case_sensitive Determine if the query is case sensitive or not
+     * @return int|false The id if row is found, else false
+     */
+    public function findIdWithField(string $column, string $value, bool $case_sensitive = false) : ?int
+    {
+        if ($case_sensitive) {
+            $sql = 'SELECT id FROM user WHERE BINARY ' . $column . ' = :' . $column;
+        } else {
+            $sql = 'SELECT id FROM user WHERE UPPER(' . $column . ') LIKE UPPER(:' . $column . ')';
+        }
+
+        $select = $this->_db->prepare($sql);
+
+        $select->bindParam(':' . $column, $value);
+
+        return $select->execute() ? $select->fetchColumn() : null;
+    }
 }
