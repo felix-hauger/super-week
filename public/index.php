@@ -10,11 +10,8 @@ $router = new AltoRouter();
 
 $router->setBasePath('/super-week');
 
-// map homepage
-$router->map('GET', '/', function() {
-    session_start();
-    echo isset($_SESSION['user']) ? 'Welcome ' . $_SESSION['user']->getFirstName() : 'Welcome to homepage';
-}, 'home');
+// Map homepage
+$router->map('GET', '/', 'App\\Controller\\Home#index', 'home');
 
 // Map register form page
 $router->map('GET', '/register', function() {
@@ -121,8 +118,14 @@ $router->map('GET', '/users/fill', function() {
 // Match current request url
 $match = $router->match();
 
+if (is_array($match) && is_string($match['target'])) {
+    $match['target'] = explode('#', $match['target']);
+
+    $match['target'][0] = new $match['target'][0];
+}
+
 // Call closure or throw 404 status
-if( is_array($match) && is_callable( $match['target'] ) ) {
+if(is_array($match) && is_callable( $match['target'])) {
 	call_user_func_array($match['target'], $match['params']);
 } else {
 	// No route was matched
