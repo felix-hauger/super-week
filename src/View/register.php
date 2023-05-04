@@ -3,8 +3,10 @@
 session_start();
 
 if (isset($_SESSION['errors']['register'])) {
+    // Set register error in variable
     $register_error = $_SESSION['errors']['register'];
 
+    // Remove error message from session
     unset($_SESSION['errors']['register']);
 }
 

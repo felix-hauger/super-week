@@ -43,6 +43,44 @@ class User
         return $select->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @return array|false Database result if request is successfull, false otherwise
+     */
+    public function find(int $id): array|false
+    {
+        $sql = 'SELECT * FROM user WHERE id = :id';
+
+        $select = $this->_db->prepare($sql);
+
+        $select->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $select->execute();
+
+        return $select->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Search user in the database using an array of values as conditions
+     * @param array $fields Associative array parameters used as conditions in the SQL query
+     * @return array|false The user data if row is found, else false
+     */
+    public function findBy(array $fields) : array|false
+    {
+        $sql = 'SELECT * FROM user WHERE ';
+
+        foreach ($fields as $column_name => $value) {
+            $sql .= $column_name . ' = :' . $column_name . ' AND ' ;
+        }
+
+        $sql = substr($sql, 0, -5);
+
+        $select = $this->_db->prepare($sql);
+
+        $select->execute($fields);
+        
+        return $select->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function create(EntityUser $user)
     {
         $sql = 'INSERT INTO user (email, password, first_name, last_name) VALUES (:email, :password, :first_name, :last_name)';
@@ -72,5 +110,27 @@ class User
         $select->execute();
 
         return $select->fetchColumn() > 0;
+    }
+
+    /**
+     * Search an id in the database using by column name & value
+     * @param string $column The name of the column in the table
+     * @param string $value The value to search
+     * @param bool $case_sensitive Determine if the query is case sensitive or not
+     * @return int|false The id if row is found, else null
+     */
+    public function findIdByField(string $column, string $value, bool $case_sensitive = false) : ?int
+    {
+        if ($case_sensitive) {
+            $sql = 'SELECT id FROM user WHERE BINARY ' . $column . ' = :' . $column;
+        } else {
+            $sql = 'SELECT id FROM user WHERE UPPER(' . $column . ') LIKE UPPER(:' . $column . ')';
+        }
+
+        $select = $this->_db->prepare($sql);
+
+        $select->bindParam(':' . $column, $value);
+
+        return $select->execute() ? $select->fetchColumn() : null;
     }
 }
