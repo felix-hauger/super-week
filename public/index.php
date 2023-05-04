@@ -26,10 +26,22 @@ $router->map('POST', '/register', function() {
     $auth = new Auth();
 
     try {
-        $auth->register();
+        if ($auth->register()) {
+            // Redirect to login page after successfull registration
+            header('Location: /super-week/login');
+
+            session_start();
+
+            // Store success message in session
+            $_SESSION['successes']['register'] = 'You registered successfully!';
+        }
     } catch (Exception $e) {
+        // Redirect to form page if registration fails
         header('Location: /super-week/register');
+
         session_start();
+
+        // Store error message in session
         $_SESSION['errors']['register'] = $e->getMessage();
     }
 }, 'user_register_validate');
@@ -47,11 +59,18 @@ $router->map('POST', '/login', function() {
     $auth = new Auth();
 
     try {
+        // Store hydrated User entity in session
         $_SESSION['user'] = $auth->login();
+
+        // Redirect to home page
         header('Location: /super-week/');
     } catch (Exception $e) {
+        // Redirect to form page if login fails
         header('Location: /super-week/login');
+
         session_start();
+
+        // Store error message in session
         $_SESSION['errors']['login'] = $e->getMessage();
     }
 }, 'user_login_validate');
