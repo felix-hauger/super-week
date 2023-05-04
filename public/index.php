@@ -12,13 +12,16 @@ $router->setBasePath('/super-week');
 
 // map homepage
 $router->map('GET', '/', function() {
-    echo 'Bienvenue sur l\'accueil';
+    session_start();
+    echo isset($_SESSION['user']) ? 'Welcome ' . $_SESSION['user']->getFirstName() : 'Welcome to homepage';
 }, 'home');
 
+// Map register form page
 $router->map('GET', '/register', function() {
     require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'register.php';
 }, 'user_register');
 
+// Map register treatment page
 $router->map('POST', '/register', function() {
     $auth = new Auth();
 
@@ -31,14 +34,36 @@ $router->map('POST', '/register', function() {
     }
 }, 'user_register_validate');
 
-// map users list page
+// Map login treatment page
+$router->map('GET', '/login', function() {
+    require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'login.php';
+}, 'user_login');
+
+// Map login treatment page
+$router->map('POST', '/login', function() {
+
+    session_start();
+
+    $auth = new Auth();
+
+    try {
+        $_SESSION['user'] = $auth->login();
+        header('Location: /super-week/');
+    } catch (Exception $e) {
+        header('Location: /super-week/login');
+        session_start();
+        $_SESSION['errors']['login'] = $e->getMessage();
+    }
+}, 'user_login_validate');
+
+// Map users list page
 $router->map('GET', '/users', function() {
     $user = new User();
 
     echo 'Bienvenue sur la liste des Utilisateurs<br />' . $user->list();    
 }, 'users_list');
 
-// map user detail page
+// Map user detail page
 $router->map('GET', '/users/[i:id]', function($id) {
     echo 'Bonjour utilisateur ' . $id;
 }, 'user_page');
@@ -54,7 +79,7 @@ $router->map('GET', '/users/fill', function() {
         $faker = Faker\Factory::create('fr_FR');
 
         $unwanted_chars = [
-            'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+            'À'=>'A', 'Â'=>'A', 'Ä'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
             'Ê'=>'E', 'Ë'=>'E', 'Î'=>'I', 'Ï'=>'I', 'Ô'=>'O', 'Ö'=>'O', 'Ù'=>'U',
             'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'à'=>'a', 'â'=>'a', 'ä'=>'a', 'æ'=>'a', 'ç'=>'c',
             'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'î'=>'i', 'ï'=>'i', 'ñ'=>'n', 'ô'=>'o'
@@ -74,14 +99,14 @@ $router->map('GET', '/users/fill', function() {
     }
 });
 
-// match current request url
+// Match current request url
 $match = $router->match();
 
-// call closure or throw 404 status
+// Call closure or throw 404 status
 if( is_array($match) && is_callable( $match['target'] ) ) {
 	call_user_func_array($match['target'], $match['params']);
 } else {
-	// no route was matched
+	// No route was matched
 	header($_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
 }
 
