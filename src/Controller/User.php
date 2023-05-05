@@ -5,9 +5,21 @@ namespace App\Controller;
 use App\Entity\User as EntityUser;
 use App\Model\User as ModelUser;
 
+/**
+ * Class managing users
+ * 
+ * @package User
+ * 
+ * @method string list()
+ * @method string getInfos()
+ * @method void fill()
+ */
 class User
 {
-    public function list()
+    /**
+     * @return string Infos of all users json formatted
+     */
+    public function list(): string
     {
         $user_model = new ModelUser();
 
@@ -16,7 +28,25 @@ class User
         return json_encode($users, JSON_UNESCAPED_UNICODE);
     }
 
-    public function fill()
+    /**
+     * @param int $id The user id
+     * @return string Infos of one user json formatted
+     */
+    public function getInfos(int $id): string
+    {
+        $user_model = new ModelUser();
+
+        $user = $user_model->find($id);
+
+        return json_encode($user, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * Fill the user table with fake infos for exemple
+     * Email is generated with first_name & last_name
+     * Password is generated with firstname
+     */
+    public function fill(): void
     {
         $user_model = new ModelUser();
 

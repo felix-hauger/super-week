@@ -2,6 +2,17 @@
 
 namespace App\Entity;
 
+/**
+ * Class entity representing one user
+ * 
+ * @package User
+ * 
+ * @var int $_id
+ * @var string $_email
+ * @var string $_password
+ * @var string $_first_name
+ * @var string $_last_name
+ */
 class User
 {
     /**
