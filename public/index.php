@@ -1,6 +1,7 @@
 <?php
 
 use App\Controller\Auth;
+use App\Controller\Library;
 use App\Controller\User;
 use Faker\Factory;
 
@@ -88,6 +89,26 @@ $router->map('GET', '/users/fill', 'App\\Controller\\User#fill', 'fill_users');
 
 // Map route to get book writing form
 $router->map('GET', '/books/write', 'App\\Controller\\Library#getWriteForm', 'write_book_form');
+
+// Map route to write a book
+$router->map('POST', '/books/write', function() {
+    $library = new Library();
+
+    session_start();
+
+    try {
+        if ($library->writeBook()) {
+            header('Location: /super-week/books/write');
+
+            session_start();
+
+            $_SESSION['successes']['write_book'] = 'Book submitted successfully!';
+        }
+    } catch (Exception $e) {
+        $_SESSION['errors']['write_book'] = $e->getMessage();
+    }
+
+}, 'write_book_validate');
 
 // Match current request url
 $match = $router->match();
