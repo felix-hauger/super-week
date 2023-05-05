@@ -17,6 +17,31 @@ use FFI\Exception;
 class Library
 {
     /**
+     * Display infos of all books json formatted
+     */
+    public function list(): void
+    {
+        $book_model = new ModelBook();
+
+        $books = $book_model->findAll();
+
+        echo json_encode($books, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * @param int $id The book id
+     * @return string Infos of one book json formatted
+     */
+    public function getBookInfos(int $id): string
+    {
+        $book_model = new ModelBook();
+
+        $book = $book_model->find($id);
+
+        return json_encode($book, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
      * Require book writing form, to be used in the adequate route
      * Only accessible for logged users
      */

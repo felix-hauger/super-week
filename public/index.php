@@ -106,6 +106,16 @@ $router->map('POST', '/books/write', function() {
 
 }, 'write_book_validate');
 
+// Map books list page
+$router->map('GET', '/books', 'App\\Controller\\Library#list', 'books_list');
+
+// Map book detail page
+$router->map('GET', '/books/[i:id]', function($id) {
+    $user = new User();
+
+    echo $user->getInfos($id);
+}, 'book_page');
+
 // Match current request url
 $match = $router->match();
 
