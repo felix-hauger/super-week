@@ -12,11 +12,13 @@ use FFI\Exception;
  * @package Library
  * 
  * @method void getWriteForm()
+ * @method bool writeBook()
  */
 class Library
 {
     /**
      * Require book writing form, to be used in the adequate route
+     * Only accessible for logged users
      */
     public function getWriteForm(): void
     {
@@ -28,7 +30,12 @@ class Library
         require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'write-book.php';
     }
 
-    public function writeBook()
+    /**
+     * Submit book to the model & create it
+     * Only accessible for logged users
+     * @return bool Depending if the written book is successfully submitted
+     */
+    public function writeBook(): bool
     {
         if (!isset($_SESSION['user'])) {
             header('Location: super-week/', true, 403);
@@ -47,16 +54,16 @@ class Library
             }
         }
 
-        $user_model = new ModelBook();
+        $book_model = new ModelBook();
 
-        $user = new Book();
+        $book = new Book();
 
-        $user
+        $book
             ->setTitle($input['title'])
             ->setSummary($input['summary'])
             ->setContent($input['content'])
             ->setUserId($_SESSION['user']->getId());
 
-        return $user_model->create($user);
+        return $book_model->create($book);
     }
 }
