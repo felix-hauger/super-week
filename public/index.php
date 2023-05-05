@@ -1,10 +1,13 @@
 <?php
 
 use App\Controller\Auth;
+use App\Controller\Library;
 use App\Controller\User;
 use Faker\Factory;
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+
+session_start();
 
 $router = new AltoRouter();
 
@@ -26,7 +29,6 @@ $router->map('POST', '/register', function() {
             // Redirect to login page after successfull registration
             header('Location: /super-week/login');
 
-            session_start();
 
             // Store success message in session
             $_SESSION['successes']['register'] = 'You registered successfully!';
@@ -35,7 +37,6 @@ $router->map('POST', '/register', function() {
         // Redirect to form page if registration fails
         header('Location: /super-week/register');
 
-        session_start();
 
         // Store error message in session
         $_SESSION['errors']['register'] = $e->getMessage();
@@ -48,7 +49,6 @@ $router->map('GET', '/login', 'App\\Controller\\Auth#getLoginForm', 'user_login'
 // Map login treatment page
 $router->map('POST', '/login', function() {
 
-    session_start();
 
     $auth = new Auth();
 
@@ -62,7 +62,6 @@ $router->map('POST', '/login', function() {
         // Redirect to form page if login fails
         header('Location: /super-week/login');
 
-        session_start();
 
         // Store error message in session
         $_SESSION['errors']['login'] = $e->getMessage();
@@ -85,6 +84,27 @@ $router->map('GET', '/users/[i:id]', function($id) {
 
 // Map route to fill database with fake users
 $router->map('GET', '/users/fill', 'App\\Controller\\User#fill', 'fill_users');
+
+// Map route to get book writing form
+$router->map('GET', '/books/write', 'App\\Controller\\Library#getWriteForm', 'write_book_form');
+
+// Map route to write a book
+$router->map('POST', '/books/write', function() {
+    $library = new Library();
+
+
+    try {
+        if ($library->writeBook()) {
+            header('Location: /super-week/books/write');
+
+
+            $_SESSION['successes']['write_book'] = 'Book submitted successfully!';
+        }
+    } catch (Exception $e) {
+        $_SESSION['errors']['write_book'] = $e->getMessage();
+    }
+
+}, 'write_book_validate');
 
 // Match current request url
 $match = $router->match();

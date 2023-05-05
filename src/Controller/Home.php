@@ -12,7 +12,7 @@ namespace App\Controller;
 class Home
 {
     /**
-     * Require home page
+     * Require home page, to be used in the adequate route
      */
     public function index(): void
     {
