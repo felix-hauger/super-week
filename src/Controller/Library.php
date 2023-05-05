@@ -20,11 +20,21 @@ class Library
      */
     public function getWriteForm(): void
     {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /super-week', true, 403);
+            die();
+        }
+
         require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'write-book.php';
     }
 
     public function writeBook()
     {
+        if (!isset($_SESSION['user'])) {
+            header('Location: super-week/', true, 403);
+            die();
+        }
+
         $input = [
             'title' => filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'summary' => filter_input(INPUT_POST, 'summary', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
