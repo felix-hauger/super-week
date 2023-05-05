@@ -16,6 +16,15 @@ class User
         return json_encode($users, JSON_UNESCAPED_UNICODE);
     }
 
+    public function getInfos(int $id)
+    {
+        $user_model = new ModelUser();
+
+        $user = $user_model->find($id);
+
+        return json_encode($user, JSON_UNESCAPED_UNICODE);
+    }
+
     public function fill()
     {
         $user_model = new ModelUser();

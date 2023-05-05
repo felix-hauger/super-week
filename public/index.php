@@ -77,7 +77,9 @@ $router->map('GET', '/users', function() {
 
 // Map user detail page
 $router->map('GET', '/users/[i:id]', function($id) {
-    echo 'Bonjour utilisateur ' . $id;
+    $user = new User();
+
+    echo $user->getInfos($id);
 }, 'user_page');
 
 $router->map('GET', '/users/fill', 'App\\Controller\\User#fill', 'fill_users');
