@@ -86,6 +86,9 @@ $router->map('GET', '/users/[i:id]', function($id) {
 // Map route to fill database with fake users
 $router->map('GET', '/users/fill', 'App\\Controller\\User#fill', 'fill_users');
 
+// Map route to get book writing form
+$router->map('GET', '/books/write', 'App\\Controller\\Library#getWriteForm', 'write_book_form');
+
 // Match current request url
 $match = $router->match();
 
