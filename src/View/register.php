@@ -1,6 +1,5 @@
 <?php
 
-session_start();
 
 if (isset($_SESSION['errors']['register'])) {
     // Set register error in variable

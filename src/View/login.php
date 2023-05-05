@@ -1,6 +1,5 @@
 <?php
 
-session_start();
 
 if (isset($_SESSION['errors']['login'])) {
     // Set login error in variable

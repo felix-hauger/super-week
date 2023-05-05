@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 if (isset($_SESSION['errors']['write_book'])) {
     // Set write_book error in variable

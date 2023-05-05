@@ -7,6 +7,8 @@ use Faker\Factory;
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
+session_start();
+
 $router = new AltoRouter();
 
 // Set website root
@@ -27,7 +29,6 @@ $router->map('POST', '/register', function() {
             // Redirect to login page after successfull registration
             header('Location: /super-week/login');
 
-            session_start();
 
             // Store success message in session
             $_SESSION['successes']['register'] = 'You registered successfully!';
@@ -36,7 +37,6 @@ $router->map('POST', '/register', function() {
         // Redirect to form page if registration fails
         header('Location: /super-week/register');
 
-        session_start();
 
         // Store error message in session
         $_SESSION['errors']['register'] = $e->getMessage();
@@ -49,7 +49,6 @@ $router->map('GET', '/login', 'App\\Controller\\Auth#getLoginForm', 'user_login'
 // Map login treatment page
 $router->map('POST', '/login', function() {
 
-    session_start();
 
     $auth = new Auth();
 
@@ -63,7 +62,6 @@ $router->map('POST', '/login', function() {
         // Redirect to form page if login fails
         header('Location: /super-week/login');
 
-        session_start();
 
         // Store error message in session
         $_SESSION['errors']['login'] = $e->getMessage();
@@ -94,13 +92,11 @@ $router->map('GET', '/books/write', 'App\\Controller\\Library#getWriteForm', 'wr
 $router->map('POST', '/books/write', function() {
     $library = new Library();
 
-    session_start();
 
     try {
         if ($library->writeBook()) {
             header('Location: /super-week/books/write');
 
-            session_start();
 
             $_SESSION['successes']['write_book'] = 'Book submitted successfully!';
         }
