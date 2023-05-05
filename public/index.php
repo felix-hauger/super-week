@@ -17,10 +17,10 @@ $router->setBasePath('/super-week');
 // Map homepage
 $router->map('GET', '/', 'App\\Controller\\Home#index', 'home');
 
-// Map register form page
+// Map user register form page
 $router->map('GET', '/register', 'App\\Controller\\Auth#getRegisterForm', 'user_register');
 
-// Map register treatment page
+// Map user register treatment
 $router->map('POST', '/register', function() {
     $auth = new Auth();
 
@@ -43,10 +43,10 @@ $router->map('POST', '/register', function() {
     }
 }, 'user_register_validate');
 
-// Map login treatment page
+// Map user login form page
 $router->map('GET', '/login', 'App\\Controller\\Auth#getLoginForm', 'user_login');
 
-// Map login treatment page
+// Map user login treatment
 $router->map('POST', '/login', function() {
 
 
@@ -67,6 +67,9 @@ $router->map('POST', '/login', function() {
         $_SESSION['errors']['login'] = $e->getMessage();
     }
 }, 'user_login_validate');
+
+// Map user logout
+$router->map('GET', '/logout', 'App\\Controller\\Auth#logout', 'user_logout');
 
 // Map users list page
 $router->map('GET', '/users', function() {
