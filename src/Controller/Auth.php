@@ -110,4 +110,10 @@ class Auth
     {
         require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'login.php';
     }
+
+    public function logout(): void
+    {
+        unset($_SESSION['user']);
+        header('Location: /super-week/');
+    }
 }
