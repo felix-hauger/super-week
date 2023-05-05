@@ -84,4 +84,20 @@ class Auth
 
         throw new Exception('Incorrect credentials.');
     }
+
+    /**
+     * Get register form in the adequate route
+     */
+    public function getRegisterForm()
+    {
+        require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'register.php';
+    }
+
+    /**
+     * Get login form in the adequate route
+     */
+    public function getLoginForm()
+    {
+        require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'login.php';
+    }
 }

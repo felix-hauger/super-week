@@ -10,16 +10,11 @@ $router = new AltoRouter();
 
 $router->setBasePath('/super-week');
 
-// map homepage
-$router->map('GET', '/', function() {
-    session_start();
-    echo isset($_SESSION['user']) ? 'Welcome ' . $_SESSION['user']->getFirstName() : 'Welcome to homepage';
-}, 'home');
+// Map homepage
+$router->map('GET', '/', 'App\\Controller\\Home#index', 'home');
 
 // Map register form page
-$router->map('GET', '/register', function() {
-    require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'register.php';
-}, 'user_register');
+$router->map('GET', '/register', 'App\\Controller\\Auth#getRegisterForm', 'user_register');
 
 // Map register treatment page
 $router->map('POST', '/register', function() {
@@ -47,9 +42,7 @@ $router->map('POST', '/register', function() {
 }, 'user_register_validate');
 
 // Map login treatment page
-$router->map('GET', '/login', function() {
-    require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'login.php';
-}, 'user_login');
+$router->map('GET', '/login', 'App\\Controller\\Auth#getLoginForm', 'user_login');
 
 // Map login treatment page
 $router->map('POST', '/login', function() {
@@ -87,42 +80,19 @@ $router->map('GET', '/users/[i:id]', function($id) {
     echo 'Bonjour utilisateur ' . $id;
 }, 'user_page');
 
-$router->map('GET', '/users/fill', function() {
-    $pdo = new PDO('mysql:host=localhost;dbname=superweek;charset=utf8mb4', 'root', '');
-
-    $sql = 'INSERT INTO user (email, password, first_name, last_name) VALUES (:email, :password, :first_name, :last_name)';
-
-    $insert = $pdo->prepare($sql);
-
-    for ($i = 0; $i < 30; $i++) {
-        $faker = Faker\Factory::create('fr_FR');
-
-        $unwanted_chars = [
-            'À'=>'A', 'Â'=>'A', 'Ä'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
-            'Ê'=>'E', 'Ë'=>'E', 'Î'=>'I', 'Ï'=>'I', 'Ô'=>'O', 'Ö'=>'O', 'Ù'=>'U',
-            'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'à'=>'a', 'â'=>'a', 'ä'=>'a', 'æ'=>'a', 'ç'=>'c',
-            'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'î'=>'i', 'ï'=>'i', 'ñ'=>'n', 'ô'=>'o'
-        ];
-
-        $first_name = $faker->firstName();
-        $last_name = $faker->lastName();
-        $email = strtolower(strtr($first_name . '.' . $last_name, $unwanted_chars)) . '@' . $faker->freeEmailDomain();
-        $password = password_hash($first_name, PASSWORD_DEFAULT);
-
-        $insert->execute([
-            ':email' => $email,
-            ':password' => $password,
-            ':first_name' => $first_name,
-            ':last_name' => $last_name
-        ]);
-    }
-});
+$router->map('GET', '/users/fill', 'App\\Controller\\User#fill', 'fill_users');
 
 // Match current request url
 $match = $router->match();
 
+if (is_array($match) && is_string($match['target'])) {
+    $match['target'] = explode('#', $match['target']);
+
+    $match['target'][0] = new $match['target'][0];
+}
+
 // Call closure or throw 404 status
-if( is_array($match) && is_callable( $match['target'] ) ) {
+if(is_array($match) && is_callable( $match['target'])) {
 	call_user_func_array($match['target'], $match['params']);
 } else {
 	// No route was matched
