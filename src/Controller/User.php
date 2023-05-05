@@ -5,6 +5,15 @@ namespace App\Controller;
 use App\Entity\User as EntityUser;
 use App\Model\User as ModelUser;
 
+/**
+ * Class managing users
+ * 
+ * @package User
+ * 
+ * @method string list()
+ * @method string getInfos()
+ * @method void fill()
+ */
 class User
 {
     /**
@@ -23,7 +32,7 @@ class User
      * @param int $id The user id
      * @return string Infos of one user json formatted
      */
-    public function getInfos(int $id)
+    public function getInfos(int $id): string
     {
         $user_model = new ModelUser();
 
