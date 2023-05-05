@@ -8,6 +8,7 @@ require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR 
 
 $router = new AltoRouter();
 
+// Set website root
 $router->setBasePath('/super-week');
 
 // Map homepage
@@ -82,11 +83,13 @@ $router->map('GET', '/users/[i:id]', function($id) {
     echo $user->getInfos($id);
 }, 'user_page');
 
+// Map route to fill database with fake users
 $router->map('GET', '/users/fill', 'App\\Controller\\User#fill', 'fill_users');
 
 // Match current request url
 $match = $router->match();
 
+// If target is a string parse it into a class method
 if (is_array($match) && is_string($match['target'])) {
     $match['target'] = explode('#', $match['target']);
 

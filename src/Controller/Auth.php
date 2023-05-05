@@ -6,13 +6,23 @@ use App\Entity\User;
 use App\Model\User as ModelUser;
 use Exception;
 
+/**
+ * Class controller managing user Authentication
+ * 
+ * @package Auth
+ * 
+ * @method bool register()
+ * @method bool login()
+ * @method void getRegisterForm()
+ * @method void getLoginForm()
+ */
 class Auth
 {
     /**
      * Register user in database
      * @return bool If the user is successfully registered or not
      */
-    public function register()
+    public function register(): bool
     {
         $input = [
             'email' => filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL),
@@ -86,17 +96,17 @@ class Auth
     }
 
     /**
-     * Get register form in the adequate route
+     * Get register form, to be used in the adequate route
      */
-    public function getRegisterForm()
+    public function getRegisterForm(): void
     {
         require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'register.php';
     }
 
     /**
-     * Get login form in the adequate route
+     * Get login form, to be used in the adequate route
      */
-    public function getLoginForm()
+    public function getLoginForm(): void
     {
         require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'login.php';
     }

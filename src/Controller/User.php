@@ -7,7 +7,10 @@ use App\Model\User as ModelUser;
 
 class User
 {
-    public function list()
+    /**
+     * @return string Infos of all users json formatted
+     */
+    public function list(): string
     {
         $user_model = new ModelUser();
 
@@ -16,6 +19,10 @@ class User
         return json_encode($users, JSON_UNESCAPED_UNICODE);
     }
 
+    /**
+     * @param int $id The user id
+     * @return string Infos of one user json formatted
+     */
     public function getInfos(int $id)
     {
         $user_model = new ModelUser();
@@ -25,7 +32,12 @@ class User
         return json_encode($user, JSON_UNESCAPED_UNICODE);
     }
 
-    public function fill()
+    /**
+     * Fill the user table with fake infos for exemple
+     * Email is generated with first_name & last_name
+     * Password is generated with firstname
+     */
+    public function fill(): void
     {
         $user_model = new ModelUser();
 
