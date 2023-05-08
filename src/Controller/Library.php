@@ -42,6 +42,35 @@ class Library
     }
 
     /**
+     * Fill the book table with fake infos
+     */
+    public function fill(): void
+    {
+        $book_model = new ModelBook();
+
+        $book = new Book();
+
+        $faker = \Faker\Factory::create('fr_FR');
+
+        for ($i = 0; $i < 10; $i++) {
+
+            $title = $faker->sentence(3);
+
+            $summary = $faker->paragraphs(4, true);
+
+            $content = $faker->paragraphs(50, true);
+
+            $book
+                ->setTitle($title)
+                ->setSummary($summary)
+                ->setContent($content)
+                ->setUserId(1);
+    
+            $book_model->create($book);
+        }
+    }
+
+    /**
      * Require book writing form, to be used in the adequate route
      * Only accessible for logged users
      */
