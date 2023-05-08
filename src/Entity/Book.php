@@ -13,13 +13,8 @@ namespace App\Entity;
  * @var string  $_content
  * @var int     $_user_id
  */
-class Book
+class Book extends AbstractEntity
 {
-    /**
-     * @var int Identifier
-     */
-    private int $_id;
-
     /**
      * @var string Book title
      */
@@ -39,24 +34,6 @@ class Book
      * @var int The book author id
      */
     private int $_user_id;
-
-    /**
-     * Get the value of _id
-     */
-    public function getId(): int
-    {
-        return $this->_id;
-    }
-
-    /**
-     * Set the value of _id
-     */
-    public function setId(int $_id): self
-    {
-        $this->_id = $_id;
-
-        return $this;
-    }
 
     /**
      * Get the value of _title

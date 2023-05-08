@@ -13,13 +13,8 @@ namespace App\Entity;
  * @var string  $_first_name
  * @var string  $_last_name
  */
-class User
+class User extends AbstractEntity
 {
-    /**
-     * @var int Identifier
-     */
-    private int $_id;
-
     /**
      * @var string Email, to auth & to contact
      */
@@ -39,24 +34,6 @@ class User
      * @var string Last name, personal info
      */
     private string $_last_name;
-
-    /**
-     * Get the value of _id
-     */
-    public function getId(): int
-    {
-        return $this->_id;
-    }
-
-    /**
-     * Set the value of _id
-     */
-    public function setId(int $_id): self
-    {
-        $this->_id = $_id;
-
-        return $this;
-    }
 
     /**
      * Get the value of _email
