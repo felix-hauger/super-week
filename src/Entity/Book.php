@@ -7,11 +7,11 @@ namespace App\Entity;
  * 
  * @package Book
  * 
- * @var int $_id
- * @var string $_title
- * @var string $_summary
- * @var string $_content
- * @var int $_user_id
+ * @var int     $_id
+ * @var string  $_title
+ * @var string  $_summary
+ * @var string  $_content
+ * @var int     $_user_id
  */
 class Book
 {

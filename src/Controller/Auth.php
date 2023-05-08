@@ -11,10 +11,10 @@ use Exception;
  * 
  * @package Auth
  * 
- * @method bool register()
- * @method bool login()
- * @method void getRegisterForm()
- * @method void getLoginForm()
+ * @method bool  register()
+ * @method bool  login()
+ * @method void  getRegisterForm()
+ * @method void  getLoginForm()
  */
 class Auth
 {
