@@ -6,6 +6,13 @@ use App\Entity\Book as EntityBook;
 use PDO;
 use PDOException;
 
+/**
+ * Class model accessing the book table in the database
+ * 
+ * @package Book
+ * 
+ * @method bool create(EntityBook $book)
+ */
 class Book extends AbstractModel
 {
     /**

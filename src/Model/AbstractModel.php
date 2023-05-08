@@ -5,10 +5,26 @@ namespace App\Model;
 use PDO;
 use PDOException;
 
+/**
+ * Parent class model handling database connection + simple methods & table names
+ * 
+ * @package AbstractModel
+ * 
+ * @method void         __construct()
+ * @method array|false  findAll()
+ * @method array|false  findOne(int $id)
+ * @method array|false  findBy(array $fields)
+ */
 abstract class AbstractModel
 {
-    protected $_db;
+    /**
+     * @var PDO Database connection
+     */
+    protected PDO $_db;
 
+    /**
+     * @var string Current class table
+     */
     protected string $_table;
 
     /**
@@ -39,7 +55,7 @@ abstract class AbstractModel
         $this->_table = '`' . strtolower(array_pop($class)) . '`';
     }
 
-        /**
+    /**
      * @return array|false Database result if request is successfull, false otherwise
      */
     public function findAll(): array|false

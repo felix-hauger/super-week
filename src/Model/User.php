@@ -11,11 +11,7 @@ use PDOException;
  * 
  * @package User
  * 
- * @method void         __construct()
- * @method array|false  findAll()
- * @method array|false  findOne(int $id)
- * @method array|false  findBy(array $fields)
- * @method bool         create()
+ * @method bool         create(EntityUser $user)
  * @method bool         isFieldInDb(string $column, mixed $value, bool $case_sensitive = false)
  * @method int|false    findIdByField(string $column, string $value, bool $case_sensitive = false)
  */
