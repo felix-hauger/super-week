@@ -39,8 +39,18 @@
 
             contentContainer.innerHTML = content;            
         };
+    
+        const getAllBooks = async function() {
+
+            const request = await fetch('/super-week/books');
+
+            const content = await request.text();
+
+            contentContainer.innerHTML = content;            
+        };
 
         getAllUsersButton.addEventListener("click", getAllUsers);
+        getAllBooksButton.addEventListener("click", getAllBooks);
 
     </script>
 </body>
