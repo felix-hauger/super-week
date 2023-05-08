@@ -42,7 +42,7 @@ class Library
     }
 
     /**
-     * Fill the book table with fake infos
+     * Fill the book table with fake infos, linked to user id 1
      */
     public function fill(): void
     {
