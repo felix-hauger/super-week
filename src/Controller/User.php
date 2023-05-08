@@ -17,15 +17,15 @@ use App\Model\User as ModelUser;
 class User
 {
     /**
-     * @return string Infos of all users json formatted
+     * Display infos of all users json formatted
      */
-    public function list(): string
+    public function list(): void
     {
         $user_model = new ModelUser();
 
         $users = $user_model->findAll();
 
-        return json_encode($users, JSON_UNESCAPED_UNICODE);
+        echo json_encode($users, JSON_UNESCAPED_UNICODE);
     }
 
     /**
