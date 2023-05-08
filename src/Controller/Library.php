@@ -11,8 +11,8 @@ use FFI\Exception;
  * 
  * @package Library
  * 
- * @method void getWriteForm()
- * @method bool writeBook()
+ * @method void  getWriteForm()
+ * @method bool  writeBook()
  */
 class Library
 {

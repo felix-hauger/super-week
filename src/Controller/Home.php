@@ -7,7 +7,7 @@ namespace App\Controller;
  * 
  * @package Home
  * 
- * @method void index()
+ * @method void  index()
  */
 class Home
 {

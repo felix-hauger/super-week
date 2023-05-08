@@ -11,89 +11,12 @@ use PDOException;
  * 
  * @package User
  * 
- * @method void         __construct()
- * @method array|false  findAll()
- * @method array|false  findOne(int $id)
- * @method array|false  findBy(array $fields)
- * @method bool         create()
+ * @method bool         create(EntityUser $user)
  * @method bool         isFieldInDb(string $column, mixed $value, bool $case_sensitive = false)
  * @method int|false    findIdByField(string $column, string $value, bool $case_sensitive = false)
  */
-class User
+class User extends AbstractModel
 {
-    private $_db;
-
-    /**
-     * Set Database connection & store it in $_db property
-     */
-    public function __construct()
-    {
-        try {
-            // Get database infos from ini file in config folder
-            $db = parse_ini_file(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR .  'db.ini');
-    
-            // Define PDO dsn & auth infos with retrieved data
-            $this->_db = new PDO($db['type'] . ':dbname=' . $db['name'] . ';host=' . $db['host'] . ';charset=' . $db['charset'], $db['user'], $db['password']);
-    
-            // Prevent emulation of prepared requests
-           $this->_db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-    }
-
-    /**
-     * @return array|false Database result if request is successfull, false otherwise
-     */
-    public function findAll(): array|false
-    {
-        $sql = 'SELECT * FROM user';
-        
-        $select = $this->_db->prepare($sql);
-
-        $select->execute();
-
-        return $select->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * @return array|false Database result if request is successfull, false otherwise
-     */
-    public function find(int $id): array|false
-    {
-        $sql = 'SELECT * FROM user WHERE id = :id';
-
-        $select = $this->_db->prepare($sql);
-
-        $select->bindParam(':id', $id, PDO::PARAM_INT);
-
-        $select->execute();
-
-        return $select->fetch(PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * Search user in the database using an array of values as conditions
-     * @param array $fields Associative array parameters used as conditions in the SQL query
-     * @return array|false The user data if row is found, else false
-     */
-    public function findBy(array $fields) : array|false
-    {
-        $sql = 'SELECT * FROM user WHERE ';
-
-        foreach ($fields as $column_name => $value) {
-            $sql .= $column_name . ' = :' . $column_name . ' AND ' ;
-        }
-
-        $sql = substr($sql, 0, -5);
-
-        $select = $this->_db->prepare($sql);
-
-        $select->execute($fields);
-        
-        return $select->fetch(PDO::FETCH_ASSOC);
-    }
-
     /**
      * @param EntityUser $user Represents one user
      * @return bool Depending if insert request is successfull or not

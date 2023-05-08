@@ -10,9 +10,9 @@ use App\Model\User as ModelUser;
  * 
  * @package User
  * 
- * @method string list()
- * @method string getInfos()
- * @method void fill()
+ * @method string   list()
+ * @method string   getInfos()
+ * @method void     fill()
  */
 class User
 {
