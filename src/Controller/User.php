@@ -50,7 +50,7 @@ class User
     {
         $user_model = new ModelUser();
 
-        $user = new EntityUser();        
+        $user = new EntityUser();
 
         $faker = \Faker\Factory::create('fr_FR');
 
