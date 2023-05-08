@@ -110,9 +110,9 @@ $router->map('GET', '/books', 'App\\Controller\\Library#list', 'books_list');
 
 // Map book detail page
 $router->map('GET', '/books/[i:id]', function($id) {
-    $user = new User();
+    $library = new Library();
 
-    echo $user->getInfos($id);
+    echo $library->getBookInfos($id);
 }, 'book_page');
 
 // Match current request url
