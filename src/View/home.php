@@ -18,12 +18,13 @@
         <button id="get-user">Display user infos</button>
 
         <input type="number" name="book-id" id="book-id" placeholder="Book Id">
-        <button id="get-user">Display book infos</button>
+        <button id="get-book">Display book infos</button>
     </div>
 
     <div id="content-container"></div>
 
     <script>
+
         const
             contentContainer = document.querySelector('#content-container'),
             getAllUsersButton = document.querySelector('#get-all-users'),
@@ -40,6 +41,17 @@
             contentContainer.innerHTML = content;            
         };
     
+        const getOneUser = async function() {
+            
+            const userId = document.querySelector('#user-id').value;
+            
+            const request = await fetch('/super-week/users/' + userId);
+
+            const content = await request.text();
+
+            contentContainer.innerHTML = content;            
+        };
+    
         const getAllBooks = async function() {
 
             const request = await fetch('/super-week/books');
@@ -49,8 +61,21 @@
             contentContainer.innerHTML = content;            
         };
 
+        const getOneBook = async function() {
+            
+            const bookId = document.querySelector('#book-id').value;
+            
+            const request = await fetch('/super-week/books/' + bookId);
+
+            const content = await request.text();
+
+            contentContainer.innerHTML = content;            
+        };
+
         getAllUsersButton.addEventListener("click", getAllUsers);
+        getUserButton.addEventListener("click", getOneUser);
         getAllBooksButton.addEventListener("click", getAllBooks);
+        getBookButton.addEventListener("click", getOneBook);
 
     </script>
 </body>
