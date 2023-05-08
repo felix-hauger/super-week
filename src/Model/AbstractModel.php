@@ -15,7 +15,7 @@ use PDOException;
  * @method array|false  findOne(int $id)
  * @method array|false  findBy(array $fields)
  */
-abstract class AbstractModel
+abstract class AbstractModel implements Template
 {
     /**
      * @var PDO Database connection
