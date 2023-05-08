@@ -19,29 +19,8 @@ use PDOException;
  * @method bool         isFieldInDb(string $column, mixed $value, bool $case_sensitive = false)
  * @method int|false    findIdByField(string $column, string $value, bool $case_sensitive = false)
  */
-class User
+class User extends AbstractModel
 {
-    private $_db;
-
-    /**
-     * Set Database connection & store it in $_db property
-     */
-    public function __construct()
-    {
-        try {
-            // Get database infos from ini file in config folder
-            $db = parse_ini_file(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR .  'db.ini');
-    
-            // Define PDO dsn & auth infos with retrieved data
-            $this->_db = new PDO($db['type'] . ':dbname=' . $db['name'] . ';host=' . $db['host'] . ';charset=' . $db['charset'], $db['user'], $db['password']);
-    
-            // Prevent emulation of prepared requests
-           $this->_db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-    }
-
     /**
      * @return array|false Database result if request is successfull, false otherwise
      */
