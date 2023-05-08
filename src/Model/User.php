@@ -22,58 +22,6 @@ use PDOException;
 class User extends AbstractModel
 {
     /**
-     * @return array|false Database result if request is successfull, false otherwise
-     */
-    public function findAll(): array|false
-    {
-        $sql = 'SELECT * FROM user';
-        
-        $select = $this->_db->prepare($sql);
-
-        $select->execute();
-
-        return $select->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * @return array|false Database result if request is successfull, false otherwise
-     */
-    public function find(int $id): array|false
-    {
-        $sql = 'SELECT * FROM user WHERE id = :id';
-
-        $select = $this->_db->prepare($sql);
-
-        $select->bindParam(':id', $id, PDO::PARAM_INT);
-
-        $select->execute();
-
-        return $select->fetch(PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * Search user in the database using an array of values as conditions
-     * @param array $fields Associative array parameters used as conditions in the SQL query
-     * @return array|false The user data if row is found, else false
-     */
-    public function findBy(array $fields) : array|false
-    {
-        $sql = 'SELECT * FROM user WHERE ';
-
-        foreach ($fields as $column_name => $value) {
-            $sql .= $column_name . ' = :' . $column_name . ' AND ' ;
-        }
-
-        $sql = substr($sql, 0, -5);
-
-        $select = $this->_db->prepare($sql);
-
-        $select->execute($fields);
-        
-        return $select->fetch(PDO::FETCH_ASSOC);
-    }
-
-    /**
      * @param EntityUser $user Represents one user
      * @return bool Depending if insert request is successfull or not
      */

@@ -9,58 +9,6 @@ use PDOException;
 class Book extends AbstractModel
 {
     /**
-     * @return array|false Database result if request is successfull, false otherwise
-     */
-    public function findAll(): array|false
-    {
-        $sql = 'SELECT * FROM book';
-        
-        $select = $this->_db->prepare($sql);
-
-        $select->execute();
-
-        return $select->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * @return array|false Database result if request is successfull, false otherwise
-     */
-    public function find(int $id): array|false
-    {
-        $sql = 'SELECT * FROM book WHERE id = :id';
-
-        $select = $this->_db->prepare($sql);
-
-        $select->bindParam(':id', $id, PDO::PARAM_INT);
-
-        $select->execute();
-
-        return $select->fetch(PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * Search book in the database using an array of values as conditions
-     * @param array $fields Associative array parameters used as conditions in the SQL query
-     * @return array|false The book data if row is found, else false
-     */
-    public function findBy(array $fields) : array|false
-    {
-        $sql = 'SELECT * FROM book WHERE ';
-
-        foreach ($fields as $column_name => $value) {
-            $sql .= $column_name . ' = :' . $column_name . ' AND ' ;
-        }
-
-        $sql = substr($sql, 0, -5);
-
-        $select = $this->_db->prepare($sql);
-
-        $select->execute($fields);
-        
-        return $select->fetch(PDO::FETCH_ASSOC);
-    }
-
-    /**
      * @param EntityBook $book Represents one book
      * @return bool Depending if insert request is successfull or not
      */
