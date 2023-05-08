@@ -72,11 +72,7 @@ $router->map('POST', '/login', function() {
 $router->map('GET', '/logout', 'App\\Controller\\Auth#logout', 'user_logout');
 
 // Map users list page
-$router->map('GET', '/users', function() {
-    $user = new User();
-
-    echo 'Bienvenue sur la liste des Utilisateurs<br />' . $user->list();    
-}, 'users_list');
+$router->map('GET', '/users', 'App\\Controller\\User#list', 'users_list');
 
 // Map user detail page
 $router->map('GET', '/users/[i:id]', function($id) {
